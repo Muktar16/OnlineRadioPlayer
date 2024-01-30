@@ -4,7 +4,7 @@ import { useTheme } from "../../contexts/ThemeContexts";
 function AppNavbar() {
   const { toggleTheme } = useTheme();
   return (
-    <nav className="bg-primary sticky z-50 top-0 h-[70px] flex justify-between md:px-4 px-1 items-center">
+    <nav className="bg-primary fixed w-full z-50 top-0 h-[70px] flex justify-between md:px-4 px-1 items-center">
       {/* nav left elements */}
       <div className="gap-[10px] flex flex-row items-center">
         <IoMenuOutline className="text-[white] w-[30px] h-[40px]" />

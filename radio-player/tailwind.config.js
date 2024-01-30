@@ -10,6 +10,9 @@ export default {
       colors: {
         primary: '#4250AF',
         darkBackground: '#2d2d2d',
+        gray1: "#989FB7",
+        gray2: "#6D748C",
+        gray3: "#4C505D",
       },
     },
   },

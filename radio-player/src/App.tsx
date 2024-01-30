@@ -11,15 +11,16 @@ const App = () => {
       <Router>
         <AppNavbar />
         <div className="relative w-full h-screen flex flex-row">
-          <div className="w-[200px] h-screen border-r-[1px] dark:bg-darkBackground">
+          <div className="min-w-[200px] mt-[70px] fixed h-screen border-r-[1px] bg-slate-100 dark:bg-darkBackground">
             <AppSider />
           </div>
-          <div>
+          <div className="relative ml-[200px] mt-[70px] mb-[20px]">
             <Routes>
               <Route path="/" Component={Browse} />
               <Route path="/radio-map" Component={RadioMap} />
               <Route path="/favorites" Component={Favorite} />
             </Routes>
+            <div className="fixed w-full bg-primary h-[60px] bottom-0"></div>
           </div>
         </div>
       </Router>

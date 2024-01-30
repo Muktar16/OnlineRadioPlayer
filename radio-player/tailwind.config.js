@@ -9,6 +9,7 @@ export default {
     extend: {
       colors: {
         primary: '#4250AF',
+        darkBackground: '#2d2d2d',
       },
     },
   },

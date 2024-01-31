@@ -68,7 +68,7 @@ const RadioMap: React.FC<{}> = () => {
   }, [radioStations]);
 
   return (
-    <div className="min-h-screen dark:bg-darkBackground">
+    <div className="min-h-screen w-full dark:bg-darkBackground">
       <Loading
         isLoading={isLoading}
         message="Loading map..."

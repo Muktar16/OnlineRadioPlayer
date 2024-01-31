@@ -8,8 +8,9 @@ import { LanguageServices } from "../../services/languageService";
 import { CountryServices } from "../../services/countryService";
 import { debounce } from "../../utils/Debounce";
 import { CommonUtils } from "../../utils/CommonUtils";
-import { TOAST_TYPE } from "../../constants/AppConstants";
+import { SpinnerType, TOAST_TYPE } from "../../constants/AppConstants";
 import NoDataFound from "../../components/NoData/NoData";
+import Loading from "../../components/Loading/Loading";
 
 function Browse() {
   const [countryOptions, setCountryOptions] = useState([]);
@@ -19,42 +20,58 @@ function Browse() {
   const [searchText, setSearchText] = useState("");
   const { setCurrentStation, currentStation } = usePlayer();
   const [languageOptions, setLanguageOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getCountries = async () => {
-      const data = await CountryServices().getAllCountries();
-      const options = data.map((item: any) => ({
-        value: item.iso_3166_1,
-        label: item.name,
-      }));
-      setCountryOptions(options);
+      try {
+        const data = await CountryServices().getAllCountries();
+        const options = data.map((item: any) => ({
+          value: item.iso_3166_1,
+          label: item.name,
+        }));
+        setCountryOptions(options);
+      } catch (error) {
+         CommonUtils().showToast(TOAST_TYPE.ERROR, "Error Getting Countries");
+      }
     };
     getCountries();
   }, []);
 
   useEffect(() => {
     const getRadioStations = async () => {
-      const data = await StationServices().getTopvoteStations();
-      setRadioStations(data);
-      if (!currentStation) setCurrentStation(data[0]);
+      try {
+        setLoading(true);
+        const data = await StationServices().getTopvoteStations();
+        setRadioStations(data);
+        if (!currentStation) setCurrentStation(data[0]);
+      } catch (error) {
+        CommonUtils().showToast(TOAST_TYPE.ERROR, "Error Getting Radio Stations");
+      }finally{
+        setLoading(false);
+      }
     };
     getRadioStations();
   }, []);
 
   useEffect(() => {
     const getLanguages = async () => {
-      const searchParams = {
-        hidebroken: true,
-        limit: 100,
-        reverse: true,
-        order: "stationcount",
-      };
-      const data = await LanguageServices().getAllLanguage(searchParams);
-      const options = data.map((item: any) => ({
-        value: item.name,
-        label: item.name,
-      }));
-      setLanguageOptions(options);
+      try {
+        const searchParams = {
+          hidebroken: true,
+          limit: 100,
+          reverse: true,
+          order: "stationcount",
+        };
+        const data = await LanguageServices().getAllLanguage(searchParams);
+        const options = data.map((item: any) => ({
+          value: item.name,
+          label: item.name,
+        }));
+        setLanguageOptions(options);
+      } catch (error) {
+        CommonUtils().showToast(TOAST_TYPE.ERROR, "Error Getting Languages");
+      }
     };
     getLanguages();
   }, []);
@@ -135,6 +152,7 @@ function Browse() {
         />
       </div>
       {/* radio stations list */}
+      <Loading isLoading={loading} spinnerType={SpinnerType.PACEMAN} message='Loading Radio Stations...'>
       <div className="w-full flex flex-wrap justify-center gap-5 gap-y-10 ">
         {radioStations.length > 0 ? (
           radioStations?.map((radioStation: any, index: number) => (
@@ -144,6 +162,7 @@ function Browse() {
           <NoDataFound />
         )}
       </div>
+      </Loading>
       <MobileDrawer />
     </div>
   );

@@ -36,12 +36,21 @@ const searchRadioStationsByName = async (
   return response;
 };
 
+const getRadioStationsWithGeoLocation = async (
+  searchParams: any
+) => {
+  const url = StationEndpoints.getRadioStationsWithGeoLocation;
+  const response = await axios.get(buildUrl(url, null, searchParams));
+  return response;
+};
+
 function StationApi() {
   return {
     getTopvoteStations,
     getRadioStationsByLanguage,
     getRadioStationsByCountry,
     searchRadioStationsByName,
+    getRadioStationsWithGeoLocation,
   };
 }
 

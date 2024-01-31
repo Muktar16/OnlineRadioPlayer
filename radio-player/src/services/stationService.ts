@@ -20,11 +20,18 @@ const searchRadioStationsByName = async (countrycode:string,name:string) => {
   return response.data; 
 };
 
+const getRadioStationsWithGeoLocation = async () => {
+  const searchParams = {has_geo_info:true,limit:500,hidebroken:true};
+  const response = await StationApi().getRadioStationsWithGeoLocation(searchParams);
+  return response.data; 
+};
+
 export function StationServices() {
   return {
     getTopvoteStations,
     getRadioStationsByLanguage,
     getRadioStationsByCountry,
     searchRadioStationsByName,
+    getRadioStationsWithGeoLocation,
   };
 }

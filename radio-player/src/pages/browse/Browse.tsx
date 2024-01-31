@@ -9,12 +9,13 @@ import { CountryServices } from "../../services/countryService";
 import { debounce } from "../../utils/Debounce";
 import { CommonUtils } from "../../utils/CommonUtils";
 import { TOAST_TYPE } from "../../constants/AppConstants";
+import NoDataFound from "../../components/NoData/NoData";
 
 function Browse() {
   const [countryOptions, setCountryOptions] = useState([]);
   const [radioStations, setRadioStations] = useState<RadioStation[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<any>();
-  const [selectedLanguage, setSelectedLanguage] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState<any>();
   const [searchText, setSearchText] = useState("");
   const { setCurrentStation, currentStation } = usePlayer();
   const [languageOptions, setLanguageOptions] = useState([]);
@@ -61,36 +62,44 @@ function Browse() {
   const getRadioStationsByLanguage = async (item: any) => {
     try {
       setSelectedLanguage(item);
-      const data = await StationServices().getRadioStationsByLanguage(item.value);
+      const data = await StationServices().getRadioStationsByLanguage(
+        item.value
+      );
       setRadioStations(data);
       setSelectedCountry(null);
-      setSearchText('');
+      setSearchText("");
     } catch (error) {
       CommonUtils().showToast(TOAST_TYPE.ERROR, "Server or Network Error");
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    const getRadioStationsByCountry = async () => {
+  const getRadioStationsByCountry = async (item: any) => {
+    try {
+      setSelectedCountry(item);
       const data = await StationServices().getRadioStationsByCountry(
-        selectedCountry?.value
+        item.value
       );
       setRadioStations(data);
-    };
-    getRadioStationsByCountry();
-  }, [selectedCountry]);
+      setSelectedLanguage(null);
+      setSearchText("");
+    } catch (error) {
+      CommonUtils().showToast(TOAST_TYPE.ERROR, "Server or Network Error");
+    }
+  };
 
-  useEffect(() => {
-    const getRadioStationsByName = async () => {
+  const getRadioStationsByName = async (value: string) => {
+    try {
+      setSearchText(value);
       const data = await StationServices().searchRadioStationsByName(
         selectedCountry?.value,
-        searchText
+        value
       );
       setRadioStations(data);
-    };
-    getRadioStationsByName();
-  }, [searchText]);
+    } catch (error) {
+      CommonUtils().showToast(TOAST_TYPE.ERROR, "Server or Network Error");
+    }
+  };
 
   return (
     <div className="px-[15px] py-[15px] min-h-screen flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
@@ -102,7 +111,7 @@ function Browse() {
             className="md:w-[200px]"
             placeholder="Find by Country"
             value={selectedCountry}
-            onChange={(item: any) => setSelectedCountry(item)}
+            onChange={getRadioStationsByCountry}
           />
         </div>
 
@@ -118,16 +127,22 @@ function Browse() {
           type="text"
           value={searchText}
           disabled={!selectedCountry ? true : false}
-          onChange={(e) => debounce(setSearchText(e.target.value), 300)}
-          placeholder="Search by name"
+          onChange={(e) =>
+            debounce(getRadioStationsByName(e.target.value), 300)
+          }
+          placeholder={selectedCountry ? "Search by name" : "Select a country first"}
           className="bg-white border border-gray-300 px-4 py-2 leading-tight"
         />
       </div>
       {/* radio stations list */}
-      <div className="w-full flex flex-wrap justify-center md:justify-center gap-5 gap-y-10 ">
-        {radioStations?.map((radioStation: any, index: number) => (
-          <RadioStationCard key={index} radioStation={radioStation} />
-        ))}
+      <div className="w-full flex flex-wrap justify-center gap-5 gap-y-10 ">
+        {radioStations.length > 0 ? (
+          radioStations?.map((radioStation: any, index: number) => (
+            <RadioStationCard key={index} radioStation={radioStation} />
+          ))
+        ) : (
+          <NoDataFound />
+        )}
       </div>
       <MobileDrawer />
     </div>

@@ -4,4 +4,5 @@ export const StationEndpoints = {
   getRadioStationsByLanguage: PlatformUrl + "/stations/bylanguage/{language}",
   getRadioStationsByCountry: PlatformUrl + "/stations/bycountrycodeexact/{countryCode}",
   searchRadioStationsByName: PlatformUrl + "/stations/search",
+  getRadioStationsWithGeoLocation: PlatformUrl + "/stations/search",
 };

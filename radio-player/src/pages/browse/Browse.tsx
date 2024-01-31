@@ -10,7 +10,7 @@ function Browse() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [searchByName, setSearchByName] = useState("");
-  const {setCurrentStation} = usePlayer();
+  const {setCurrentStation, currentStation} = usePlayer();
 
   useEffect(() => {
     const getCountries = async () => {
@@ -28,7 +28,7 @@ function Browse() {
         `${import.meta.env.VITE_BASE_URL}/stations/topvote/100`
       );
       setRadioStations(response.data);
-      setCurrentStation(response.data[0]);
+      if(!currentStation) setCurrentStation(response.data[0]);
     };
     getRadioStations();
   }, []);

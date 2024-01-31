@@ -10,16 +10,38 @@ const getTopvoteStations = async () => {
   return response;
 };
 
-const getRadioStationsByLanguage = async (pathParams:any,searchParams:any) => {
-    const url = StationEndpoints.getRadioStationsByLanguage;
-    const response = await axios.get(buildUrl(url, pathParams, searchParams));
-    return response;
-  };
+const getRadioStationsByLanguage = async (
+  pathParams: any,
+  searchParams: any
+) => {
+  const url = StationEndpoints.getRadioStationsByLanguage;
+  const response = await axios.get(buildUrl(url, pathParams, searchParams));
+  return response;
+};
+
+const getRadioStationsByCountry = async (
+  pathParams: any,
+  searchParams: any
+) => {
+  const url = StationEndpoints.getRadioStationsByCountry;
+  const response = await axios.get(buildUrl(url, pathParams, searchParams));
+  return response;
+};
+
+const searchRadioStationsByName = async (
+  searchParams: any
+) => {
+  const url = StationEndpoints.searchRadioStationsByName;
+  const response = await axios.get(buildUrl(url, null, searchParams));
+  return response;
+};
 
 function StationApi() {
   return {
     getTopvoteStations,
-    getRadioStationsByLanguage
+    getRadioStationsByLanguage,
+    getRadioStationsByCountry,
+    searchRadioStationsByName,
   };
 }
 

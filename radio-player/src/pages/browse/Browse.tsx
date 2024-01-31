@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import RadioStationCard from "../../components/RadioStationCard/RadioStationCard";
 import MobileDrawer from "../../components/MobileDrawer/MobileDrawer";
@@ -13,7 +12,7 @@ function Browse() {
   const [radioStations, setRadioStations] = useState<RadioStation[]>([]);
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
-  const [searchByName, setSearchByName] = useState("");
+  const [searchText, setSearchText] = useState("");
   const { setCurrentStation, currentStation } = usePlayer();
   const [languageOptions, setLanguageOptions] = useState([]);
 
@@ -58,21 +57,48 @@ function Browse() {
 
   useEffect(() => {
     const getRadioStationsByLanguage = async () => {
-        const data = await StationServices().getRadioStationsByLanguage(selectedLanguage);
-        setRadioStations(data);
+      const data = await StationServices().getRadioStationsByLanguage(
+        selectedLanguage
+      );
+      setRadioStations(data);
+      setSelectedCountryCode("");
     };
     getRadioStationsByLanguage();
   }, [selectedLanguage]);
+
+  useEffect(() => {
+    const getRadioStationsByCountry = async () => {
+      const data = await StationServices().getRadioStationsByCountry(
+        selectedCountryCode
+      );
+      setRadioStations(data);
+    };
+    getRadioStationsByCountry();
+  }, [selectedCountryCode]);
+
+  useEffect(() => {
+    const getRadioStationsByName = async () => {
+      const data = await StationServices().searchRadioStationsByName(
+        selectedCountryCode,
+        searchText
+      );
+      setRadioStations(data);
+    };
+    getRadioStationsByName();
+  }, [searchText]);
 
   return (
     <div className="px-[15px] py-[15px] min-h-screen flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
       {/* filters */}
       <div className="w-full flex md:flex-row flex-wrap items-center justify-between gap-2">
         <div className="relative">
-          <Select options={countryOptions}
-          className="md:w-[200px]"
-          placeholder="Find by Country"
-          onChange={(item: any) => setSelectedCountryCode(item.value)}/>
+          <Select
+            options={countryOptions}
+            className="md:w-[200px]"
+            placeholder="Find by Country"
+            value={selectedCountryCode}
+            onChange={(item: any) => setSelectedCountryCode(item.value)}
+          />
         </div>
 
         <Select
@@ -84,9 +110,9 @@ function Browse() {
 
         <input
           type="text"
-          value={searchByName}
+          value={searchText}
           disabled={!selectedCountryCode ? true : false}
-          onChange={(e) => setSearchByName(e.target.value)}
+          onChange={(e) => setSearchText(e.target.value)}
           placeholder="Search by name"
           className="bg-white border border-gray-300 px-4 py-2 leading-tight"
         />

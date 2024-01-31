@@ -10,9 +10,21 @@ const getRadioStationsByLanguage = async (selectedLanguage:string) => {
   return response.data; 
 };
 
+const getRadioStationsByCountry = async (countryCode:string) => {
+  const response = await StationApi().getRadioStationsByCountry({ countryCode },{limit: 100});
+  return response.data; 
+};
+
+const searchRadioStationsByName = async (countrycode:string,name:string) => {
+  const response = await StationApi().searchRadioStationsByName({ countrycode, name });
+  return response.data; 
+};
+
 export function StationServices() {
   return {
     getTopvoteStations,
     getRadioStationsByLanguage,
+    getRadioStationsByCountry,
+    searchRadioStationsByName,
   };
 }

@@ -1,9 +1,10 @@
+// import RadioPlayer from "../../components/RadioPlayer/RadioPlayer"
 
 
 function Favorite() {
   return (
-    <div>
-      hello form Favorite
+    <div className="h-screen">
+      Hello
     </div>
   )
 }

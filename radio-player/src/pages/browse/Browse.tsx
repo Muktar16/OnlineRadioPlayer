@@ -2,14 +2,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import RadioStationCard from "../../components/RadioStationCard/RadioStationCard";
 import MobileDrawer from "../../components/MobileDrawer/MobileDrawer";
+import { usePlayer } from "../../contexts/PlayerContext";
 
 function Browse() {
   const [countries, setCountries] = useState([]);
-  const [radioStations, setRadioStations] = useState([]);
+  const [radioStations, setRadioStations] = useState<RadioStation[]>([]);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [searchByName, setSearchByName] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const {setCurrentStation} = usePlayer();
 
   useEffect(() => {
     const getCountries = async () => {
@@ -27,29 +28,30 @@ function Browse() {
         `${import.meta.env.VITE_BASE_URL}/stations/topvote/100`
       );
       setRadioStations(response.data);
+      setCurrentStation(response.data[0]);
     };
     getRadioStations();
   }, []);
 
-//   // Apply filters when selectedCountry, selectedLanguage, or searchByName change
-//   useEffect(() => {
-//     const filteredStations = radioStations.filter((station) => {
-//       const countryFilter =
-//         !selectedCountry || station.country === selectedCountry;
-//       const languageFilter =
-//         !selectedLanguage || station.language.includes(selectedLanguage);
-//       const nameFilter =
-//         !searchByName ||
-//         station.name.toLowerCase().includes(searchByName.toLowerCase());
+  //   // Apply filters when selectedCountry, selectedLanguage, or searchByName change
+  //   useEffect(() => {
+  //     const filteredStations = radioStations.filter((station) => {
+  //       const countryFilter =
+  //         !selectedCountry || station.country === selectedCountry;
+  //       const languageFilter =
+  //         !selectedLanguage || station.language.includes(selectedLanguage);
+  //       const nameFilter =
+  //         !searchByName ||
+  //         station.name.toLowerCase().includes(searchByName.toLowerCase());
 
-//       return countryFilter && languageFilter && nameFilter;
-//     });
+  //       return countryFilter && languageFilter && nameFilter;
+  //     });
 
-//     setRadioStations(filteredStations);
-//   }, [selectedCountry, selectedLanguage, searchByName, radioStations]);
+  //     setRadioStations(filteredStations);
+  //   }, [selectedCountry, selectedLanguage, searchByName, radioStations]);
 
   return (
-    <div className="px-[15px] py-[15px] flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
+    <div className="px-[15px] py-[15px] min-h-screen flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
       {/* filters */}
       <div className="w-full flex md:flex-row flex-wrap items-center justify-between gap-2">
         <div className="relative">

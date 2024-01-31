@@ -5,7 +5,9 @@ import Favorite from "./pages/favorites/Favorite";
 import RadioMap from "./pages/radio-map/RadioMap";
 import AppSider from "./components/AppSider/AppSider";
 import MobileDrawer from "./components/MobileDrawer/MobileDrawer";
-import { useDrawer } from "./contexts/DrawerContext";
+import FooterPlayer from "./components/FooterPlayer/FooterPlayer";
+import RadioPlayer from "./components/RadioPlayer/RadioPlayer";
+// import { useDrawer } from "./contexts/DrawerContext";
 
 const App = () => {
   return (
@@ -17,15 +19,16 @@ const App = () => {
             <AppSider />
             {/* <MobileDrawer /> */}
           </div>
-          <div className="relative lg:ml-[200px] mt-[70px] mb-[20px]">
+          <div className="relative w-full lg:ml-[200px] mt-[70px] mb-[300px]">
             <Routes>
               <Route path="/" Component={Browse} />
               <Route path="/radio-map" Component={RadioMap} />
               <Route path="/favorites" Component={Favorite} />
             </Routes>
-            <div className="fixed w-full bg-primary h-[60px] bottom-0"></div>
+            <FooterPlayer />
           </div>
         </div>
+        <RadioPlayer/>
       </Router>
       <MobileDrawer />
     </div>

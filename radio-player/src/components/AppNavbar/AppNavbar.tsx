@@ -4,7 +4,6 @@ import { useDrawer } from "../../contexts/DrawerContext";
 
 function AppNavbar() {
   const {toggleDrawer} = useDrawer();
-
   const { toggleTheme } = useTheme();
   return (
     <nav className="bg-primary fixed w-full z-50 top-0 h-[70px] flex justify-between md:px-4 px-1 items-center">

@@ -2,7 +2,7 @@
 
 function RadioMap() {
   return (
-    <div>
+    <div className="h-screen">
       hello from RadioMpa page
     </div>
   )

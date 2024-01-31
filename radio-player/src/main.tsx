@@ -4,13 +4,16 @@ import App from "./App.tsx";
 import "./index.css";
 import { ThemeProvider } from "./contexts/ThemeContexts.tsx";
 import { DrawerProvider } from "./contexts/DrawerContext.tsx";
+import { PlayerProvider } from "./contexts/PlayerContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <DrawerProvider>
-        <App />
-      </DrawerProvider>
+      <PlayerProvider>
+        <DrawerProvider>
+          <App />
+        </DrawerProvider>
+      </PlayerProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

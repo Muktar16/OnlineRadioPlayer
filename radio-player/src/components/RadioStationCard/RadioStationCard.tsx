@@ -1,7 +1,16 @@
 import { FaHeart, FaPlay } from "react-icons/fa6";
+import { usePlayer } from "../../contexts/PlayerContext";
 import { getFirstWord } from "../../utils/globalFunctions";
 
 const RadioStationCard = ({ radioStation }: any) => {
+  const {setCurrentStation} = usePlayer();
+  const handleAddToFavorite = () => {
+    console.log("add to favorite");
+  }
+  const handlePlay = () => {
+    setCurrentStation(radioStation);
+  }
+
   return (
     <div className="relative w-[270px] h-[280px] shadow-md border-t-[1px] px-3 py-3 dark:bg-[#203042]">
       <div className="w-full justify-between flex flex-row min-h-[90px]">
@@ -40,11 +49,11 @@ const RadioStationCard = ({ radioStation }: any) => {
       </div>
       <div className="w-full absolute bottom-3">
         <div className="flex items-center justify-end mr-10 gap-5">
-          <div className="flex gap-1 items-center justify-center text-[20px] dark:text-white">
+          <div onClick={handleAddToFavorite} className="flex gap-1 items-center justify-center text-[20px] cursor-pointer dark:text-white">
             <FaHeart /> Like
           </div>
 
-          <div className="flex gap-1 items-center justify-center text-[20px] dark:text-white">
+          <div onClick={handlePlay} className="flex gap-1 items-center justify-center cursor-pointer text-[20px] dark:text-white">
             <FaPlay /> Play
           </div>
         </div>

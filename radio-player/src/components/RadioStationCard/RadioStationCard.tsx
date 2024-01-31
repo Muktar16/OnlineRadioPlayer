@@ -40,11 +40,11 @@ const RadioStationCard = ({ radioStation }: any) => {
       </div>
       <div className="w-full absolute bottom-3">
         <div className="flex items-center justify-end mr-10 gap-5">
-          <div className="flex gap-1 items-center justify-center text-[20px]">
+          <div className="flex gap-1 items-center justify-center text-[20px] dark:text-white">
             <FaHeart /> Like
           </div>
 
-          <div className="flex gap-1 items-center justify-center text-[20px]">
+          <div className="flex gap-1 items-center justify-center text-[20px] dark:text-white">
             <FaPlay /> Play
           </div>
         </div>

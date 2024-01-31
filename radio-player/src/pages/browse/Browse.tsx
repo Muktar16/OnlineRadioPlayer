@@ -6,11 +6,14 @@ import { StationServices } from "../../services/stationService";
 import Select from "react-select";
 import { LanguageServices } from "../../services/languageService";
 import { CountryServices } from "../../services/countryService";
+import { debounce } from "../../utils/Debounce";
+import { CommonUtils } from "../../utils/CommonUtils";
+import { TOAST_TYPE } from "../../constants/AppConstants";
 
 function Browse() {
   const [countryOptions, setCountryOptions] = useState([]);
   const [radioStations, setRadioStations] = useState<RadioStation[]>([]);
-  const [selectedCountryCode, setSelectedCountryCode] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState<any>();
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [searchText, setSearchText] = useState("");
   const { setCurrentStation, currentStation } = usePlayer();
@@ -55,31 +58,33 @@ function Browse() {
     getLanguages();
   }, []);
 
-  useEffect(() => {
-    const getRadioStationsByLanguage = async () => {
-      const data = await StationServices().getRadioStationsByLanguage(
-        selectedLanguage
-      );
+  const getRadioStationsByLanguage = async (item: any) => {
+    try {
+      setSelectedLanguage(item);
+      const data = await StationServices().getRadioStationsByLanguage(item.value);
       setRadioStations(data);
-      setSelectedCountryCode("");
-    };
-    getRadioStationsByLanguage();
-  }, [selectedLanguage]);
+      setSelectedCountry(null);
+      setSearchText('');
+    } catch (error) {
+      CommonUtils().showToast(TOAST_TYPE.ERROR, "Server or Network Error");
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const getRadioStationsByCountry = async () => {
       const data = await StationServices().getRadioStationsByCountry(
-        selectedCountryCode
+        selectedCountry?.value
       );
       setRadioStations(data);
     };
     getRadioStationsByCountry();
-  }, [selectedCountryCode]);
+  }, [selectedCountry]);
 
   useEffect(() => {
     const getRadioStationsByName = async () => {
       const data = await StationServices().searchRadioStationsByName(
-        selectedCountryCode,
+        selectedCountry?.value,
         searchText
       );
       setRadioStations(data);
@@ -96,8 +101,8 @@ function Browse() {
             options={countryOptions}
             className="md:w-[200px]"
             placeholder="Find by Country"
-            value={selectedCountryCode}
-            onChange={(item: any) => setSelectedCountryCode(item.value)}
+            value={selectedCountry}
+            onChange={(item: any) => setSelectedCountry(item)}
           />
         </div>
 
@@ -105,20 +110,21 @@ function Browse() {
           options={languageOptions}
           className="md:w-[200px]"
           placeholder="Find by Language"
-          onChange={(item: any) => setSelectedLanguage(item.value)}
+          value={selectedLanguage}
+          onChange={getRadioStationsByLanguage}
         />
 
         <input
           type="text"
           value={searchText}
-          disabled={!selectedCountryCode ? true : false}
-          onChange={(e) => setSearchText(e.target.value)}
+          disabled={!selectedCountry ? true : false}
+          onChange={(e) => debounce(setSearchText(e.target.value), 300)}
           placeholder="Search by name"
           className="bg-white border border-gray-300 px-4 py-2 leading-tight"
         />
       </div>
       {/* radio stations list */}
-      <div className="w-full flex flex-wrap justify-center md:justify-between gap-5 gap-y-10 ">
+      <div className="w-full flex flex-wrap justify-center md:justify-center gap-5 gap-y-10 ">
         {radioStations?.map((radioStation: any, index: number) => (
           <RadioStationCard key={index} radioStation={radioStation} />
         ))}

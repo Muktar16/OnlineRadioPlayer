@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import RadioStationCard from "../../components/RadioStationCard/RadioStationCard";
 import MobileDrawer from "../../components/MobileDrawer/MobileDrawer";
 import { usePlayer } from "../../contexts/PlayerContext";
+import { StationServices } from "../../services/stationService";
+import Select from 'react-select';
 
 function Browse() {
   const [countries, setCountries] = useState([]);
@@ -24,49 +26,30 @@ function Browse() {
 
   useEffect(() => {
     const getRadioStations = async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/stations/topvote/100`
-      );
-      setRadioStations(response.data);
-      if(!currentStation) setCurrentStation(response.data[0]);
+      const data = await StationServices().getTopvoteStations(); 
+      setRadioStations(data);
+      if(!currentStation) setCurrentStation(data[0]);
     };
     getRadioStations();
   }, []);
 
-  //   // Apply filters when selectedCountry, selectedLanguage, or searchByName change
-  //   useEffect(() => {
-  //     const filteredStations = radioStations.filter((station) => {
-  //       const countryFilter =
-  //         !selectedCountry || station.country === selectedCountry;
-  //       const languageFilter =
-  //         !selectedLanguage || station.language.includes(selectedLanguage);
-  //       const nameFilter =
-  //         !searchByName ||
-  //         station.name.toLowerCase().includes(searchByName.toLowerCase());
+  useEffect(() => {
+    const getLanguages = async () => {
+      const data = await LanguageService().getAllLanguage(); 
+      setRadioStations(data);
+      if(!currentStation) setCurrentStation(data[0]);
+    };
+    getLanguages();
+  }, []);
 
-  //       return countryFilter && languageFilter && nameFilter;
-  //     });
 
-  //     setRadioStations(filteredStations);
-  //   }, [selectedCountry, selectedLanguage, searchByName, radioStations]);
 
   return (
     <div className="px-[15px] py-[15px] min-h-screen flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
       {/* filters */}
       <div className="w-full flex md:flex-row flex-wrap items-center justify-between gap-2">
         <div className="relative">
-          <select
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-            className="appearance-none bg-white border border-gray-300 px-4 py-2 leading-tight focus:outline-none focus:border-blue-500"
-          >
-            <option value="">Find by country</option>
-            {/* {countries.map((country) => (
-              <option key={country.code} value={country.code}>
-                {country.name}
-              </option>
-            ))} */}
-          </select>
+          <Select></Select>
         </div>
 
         <input

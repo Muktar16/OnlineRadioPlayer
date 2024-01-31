@@ -1,15 +1,21 @@
 import { FaHeart, FaPlay } from "react-icons/fa6";
 import { usePlayer } from "../../contexts/PlayerContext";
-import { getFirstWord } from "../../utils/globalFunctions";
 
 const RadioStationCard = ({ radioStation }: any) => {
   const {setCurrentStation} = usePlayer();
+  
   const handleAddToFavorite = () => {
     console.log("add to favorite");
   }
   const handlePlay = () => {
     setCurrentStation(radioStation);
   }
+  const getFirstWord = (sentence: string) => {
+    const words = sentence.includes(",")
+      ? sentence.split(",")
+      : sentence.split(" ");
+    return words[0] || null;
+  };
 
   return (
     <div className="relative w-[270px] h-[280px] shadow-md border-t-[1px] px-3 py-3 dark:bg-[#203042]">

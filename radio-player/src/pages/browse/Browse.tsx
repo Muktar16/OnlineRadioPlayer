@@ -21,6 +21,8 @@ function Browse() {
   const { setCurrentStation, currentStation } = usePlayer();
   const [languageOptions, setLanguageOptions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Loading radio stations...");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const getCountries = async () => {
@@ -40,21 +42,55 @@ function Browse() {
 
   useEffect(() => {
     const getRadioStations = async () => {
-      try {
-        setLoading(true);
-        const data = await StationServices().getTopvoteStations();
-        setRadioStations(data);
-        if (!currentStation) setCurrentStation(data[0]);
-      } catch (error) {
-        CommonUtils().showToast(
-          TOAST_TYPE.ERROR,
-          "Error Getting Radio Stations"
-        );
-      } finally {
-        setLoading(false);
+      if(!selectedCountry && !searchText && !selectedLanguage){
+        try {
+          setLoading(true);
+          const limit = 100;
+          const offset = (page - 1) * limit;
+          let data:any;
+          if(page == 1) data = await StationServices().getTopvoteStations();
+          else data = await StationServices().getStations(limit, offset);
+          setRadioStations((prevStations) => [...prevStations, ...data]);
+          if (!currentStation && data.length > 0) setCurrentStation(data[0]);
+        } catch (error) {
+          CommonUtils().showToast(
+            TOAST_TYPE.ERROR,
+            "Error Getting Radio Stations"
+          );
+        } finally {
+          setLoading(false);
+        }
       }
     };
     getRadioStations();
+  }, [page]);
+
+  const handleScroll = () => {
+    const windowHeight =
+      "innerHeight" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
+
+    const windowBottom = windowHeight + window.scrollY;
+
+    if (windowBottom >= docHeight - 10) {
+      setPage((prevPage) => prevPage + 1);
+      setLoadingMessage("Loading more...");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -159,8 +195,8 @@ function Browse() {
       {/* radio stations list */}
       <Loading
         isLoading={loading}
-        spinnerType={SpinnerType.PACEMAN}
-        message="Loading Radio Stations..."
+        spinnerType={SpinnerType.HASH}
+        message={loadingMessage}
       >
         <div className="w-full flex flex-wrap justify-center gap-5 gap-y-10">
           {radioStations.length > 0 ? (

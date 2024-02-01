@@ -10,6 +10,12 @@ const getTopvoteStations = async () => {
   return response;
 };
 
+const getStations = async (searchParams:any) => {
+  const url = StationEndpoints.getTopvoteStations;
+  const response = await axios.get(buildUrl(url, null, searchParams));
+  return response;
+};
+
 const getRadioStationsByLanguage = async (
   pathParams: any,
   searchParams: any
@@ -47,6 +53,7 @@ const getRadioStationsWithGeoLocation = async (
 function StationApi() {
   return {
     getTopvoteStations,
+    getStations,
     getRadioStationsByLanguage,
     getRadioStationsByCountry,
     searchRadioStationsByName,

@@ -10,7 +10,7 @@ function AppSider() {
       <Link
         to="/"
         className={`flex px-[20px] flex-row gap-5 items-center justify-start h-[60px] dark:hover:bg-[#463f3f] hover:bg-slate-300 dark:text-[white] ${
-          location.pathname === "/" ? "bg-slate-300" : ""
+          location.pathname === "/" ? "bg-slate-300 dark:bg-[#614c13]" : ""
         }`}
       >
         <FaRadio />

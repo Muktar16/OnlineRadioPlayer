@@ -44,12 +44,12 @@ const RadioStationCard = ({ radioStation }: any) => {
       </div>
       <div className="flex flex-row gap-3 h-[40px]">
         {radioStation?.language && (
-          <div className="py-[6px] rounded-[20px] font-semibold bg-[#e0e0e0] px-3">
+          <div className="py-[6px] rounded-[20px] font-semibold overflow-hidden overflow-ellipsis max-w-[120px] bg-[#e0e0e0] px-3">
             {getFirstWord(radioStation?.language)}
           </div>
         )}
         {radioStation?.tags && (
-          <div className="py-[6px] rounded-[20px] font-semibold bg-[#e0e0e0] px-3">
+          <div className="py-[6px] rounded-[20px] font-semibold overflow-hidden overflow-ellipsis max-w-[120px] bg-[#e0e0e0] px-3">
             {getFirstWord(radioStation?.tags)}
           </div>
         )}

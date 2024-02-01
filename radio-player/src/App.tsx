@@ -3,7 +3,7 @@ import AppNavbar from "./components/AppNavbar/AppNavbar";
 import Browse from "./pages/browse/Browse";
 import Favorite from "./pages/favorites/Favorite";
 import RadioMap from "./pages/radio-map/RadioMap";
-import AppSider from "./components/AppSider/AppSider";
+import AppMenu from "./components/AppMenu/AppMenu";
 import MobileDrawer from "./components/MobileDrawer/MobileDrawer";
 import FooterPlayer from "./components/FooterPlayer/FooterPlayer";
 import RadioPlayer from "./components/RadioPlayer/RadioPlayer";
@@ -17,7 +17,7 @@ const App = () => {
         <AppNavbar />
         <div className="relative w-full h-screen flex flex-row">
           <div className="min-w-[200px] mt-[70px] hidden lg:block fixed h-screen border-r-[1px] bg-slate-100 dark:bg-darkBackground">
-            <AppSider />
+            <AppMenu />
           </div>
           <div className="w-full lg:ml-[200px] mt-[70px] mb-[300px]">
             <Routes>
@@ -30,8 +30,8 @@ const App = () => {
           </div>
         </div>
         <RadioPlayer/>
+        <MobileDrawer />
       </Router>
-      <MobileDrawer />
     </div>
   );
 };

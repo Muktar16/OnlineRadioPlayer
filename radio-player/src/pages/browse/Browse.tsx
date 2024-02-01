@@ -21,7 +21,9 @@ function Browse() {
   const { setCurrentStation, currentStation } = usePlayer();
   const [languageOptions, setLanguageOptions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("Loading radio stations...");
+  const [loadingMessage, setLoadingMessage] = useState(
+    "Loading radio stations..."
+  );
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -42,13 +44,13 @@ function Browse() {
 
   useEffect(() => {
     const getRadioStations = async () => {
-      if(!selectedCountry && !searchText && !selectedLanguage){
+      if (!selectedCountry && !searchText && !selectedLanguage) {
         try {
           setLoading(true);
           const limit = 100;
           const offset = (page - 1) * limit;
-          let data:any;
-          if(page == 1) data = await StationServices().getTopvoteStations();
+          let data: any;
+          if (page == 1) data = await StationServices().getTopvoteStations();
           else data = await StationServices().getStations(limit, offset);
           setRadioStations((prevStations) => [...prevStations, ...data]);
           if (!currentStation && data.length > 0) setCurrentStation(data[0]);
@@ -158,22 +160,20 @@ function Browse() {
   };
 
   return (
-    <div className="px-[15px] py-[15px] min-h-screen flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
+    <div className="md:px-[15px] px-1 py-[15px] min-h-screen flex flex-col gap-10 bg-slate-100 dark:bg-darkBackground">
       {/* filters */}
-      <div className="w-full flex md:flex-row flex-wrap items-center justify-between gap-2">
-        <div className="relative">
-          <Select
-            options={countryOptions}
-            className="md:w-[200px]"
-            placeholder="Find by Country"
-            value={selectedCountry}
-            onChange={getRadioStationsByCountry}
-          />
-        </div>
+      <div className="w-full flex md:flex-row flex-wrap items-center justify-center gap-1 md:gap-2 md:px-5">
+        <Select
+          options={countryOptions}
+          className="w-[32%] text-[10px] md:text-[14px]"
+          placeholder="Find by Country"
+          value={selectedCountry}
+          onChange={getRadioStationsByCountry}
+        />
 
         <Select
           options={languageOptions}
-          className="md:w-[200px]"
+          className="w-[32%] text-[10px] md:text-[14px]"
           placeholder="Find by Language"
           value={selectedLanguage}
           onChange={getRadioStationsByLanguage}
@@ -187,9 +187,9 @@ function Browse() {
             debounce(getRadioStationsByName(e.target.value), 300)
           }
           placeholder={
-            selectedCountry ? "Search by name" : "Select a country first"
+            selectedCountry ? "Search by name" : "Select country first"
           }
-          className="bg-white border border-gray-300 px-4 py-2 leading-tight"
+          className="bg-white border px-2 rounded-[4px] border-gray-300 text-[10px] h-[38px] md:text-[14px] w-[32%] py-2 leading-tight"
         />
       </div>
       {/* radio stations list */}

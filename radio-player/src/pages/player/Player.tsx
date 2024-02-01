@@ -4,6 +4,7 @@ import { usePlayer } from "../../contexts/PlayerContext";
 
 function Player() {
   const { currentStation, togglePlaying, isPlaying , decreaseVolume, increaseVolume, volume} = usePlayer();
+  
   return (
     <>
       <div className="bg-darkBackground flex justify-center h-screen ">
@@ -11,9 +12,9 @@ function Player() {
           <img
             src={currentStation?.favicon || "/defaultFavIcon.jpg"}
             alt="idk - Highvyn, Taylor Shin"
-            className=" md:w-full h-3/5 mx-auto rounded-lg mb-4 shadow-teal-50"
+            className=" md:w-full h-3/6 mx-auto rounded-lg mb-4 shadow-teal-50"
           />
-
+            <img src={isPlaying ? "/audioVisualizer.gif" : '/staticVisualizer.png'} alt="" className="w-full h-[60px]"/>
           <h2 className="text-[20px] text-white font-semibold text-center">
             {currentStation?.name}
           </h2>

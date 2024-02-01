@@ -4,13 +4,16 @@ import { LuClock12 } from "react-icons/lu";
 import { usePlayer } from "../../contexts/PlayerContext";
 import { ScaleLoader } from "react-spinners";
 import { useLocation } from "react-router-dom";
+import { useFavoriteStationContext } from "../../contexts/FavoriteStationsContext";
 
 const FooterPlayer = () => {
   const { currentStation, isPlaying, togglePlaying } = usePlayer();
+  const { isFavorite, addFavorite, removeFavorite } =
+    useFavoriteStationContext();
   const location = useLocation();
   const isPlayerRoute = location.pathname === "/player";
   if (isPlayerRoute) {
-    return null; 
+    return null;
   }
   return (
     <div className="sticky w-full bg-primary h-[65px] flex items-center justify-between bottom-0 md:px-5 px-1">
@@ -29,7 +32,24 @@ const FooterPlayer = () => {
       </div>
       <div className="flex flex-row items-center w-[40%] justify-end gap-4">
         <LuClock12 className="text-white" />
-        <FaHeart className="text-white" />
+        <FaHeart
+          onClick={
+            currentStation?.stationuuid &&
+            isFavorite(currentStation?.stationuuid)
+              ? () => {
+                  currentStation && removeFavorite(currentStation.stationuuid);
+                }
+              : () => {
+                  currentStation && addFavorite(currentStation);
+                }
+          }
+          className={`text-white text-[30px] cursor-pointer ${
+            currentStation?.stationuuid &&
+            isFavorite(currentStation?.stationuuid)
+              ? "text-[#47e847]"
+              : "dark:text-white"
+          }`}
+        />
         <div
           onClick={togglePlaying}
           className="h-[58px] cursor-pointer w-[58px] bg-[#eb5181] flex items-center justify-center rounded-[50%]"

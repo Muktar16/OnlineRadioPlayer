@@ -39,9 +39,9 @@ function Player() {
           </div>
 
           <div className="mt-6 bg-gray-200 h-2 rounded-full">
-            <div style={{width:`${volume}%`}} className={`g-teal-500 h-2 rounded-full`}></div>
+            <div style={{width:`${volume*100}%`}} className={`bg-teal-500 h-2 w-full rounded-full`}></div>
           </div>
-          <div className="text-white">{volume}</div>
+          <div className="text-white">Volume: {Math.ceil(volume*100)}</div>
         </div>
       </div>
     </>

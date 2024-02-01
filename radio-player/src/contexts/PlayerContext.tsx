@@ -24,7 +24,7 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStation, setCurrentStation] = useState<RadioStation | null>(null);
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState(0.5);
   const [recordEnabled, setRecordEnabled] = useState(false);
 
   const togglePlaying = () => {
@@ -37,7 +37,8 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
 
   const increaseVolume = () => {
     if (volume < 1) {
-      const newVolume = Math.min(1, volume + 0.5);
+      const newVolume = Math.min(1, volume + 0.01);
+      // const newVolume = volume + 0.01;
       setVolume(newVolume);
       if(audioRef.current) audioRef.current.volume = newVolume;
     }
@@ -45,7 +46,8 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
 
   const decreaseVolume = () => {
     if (volume > 0) {
-      const newVolume = Math.max(0, volume - 0.5);
+      const newVolume = Math.max(0, volume - 0.01);
+      // const newVolume = volume - 0.01;
       setVolume(newVolume);
       if(audioRef.current) audioRef.current.volume = newVolume;
     }

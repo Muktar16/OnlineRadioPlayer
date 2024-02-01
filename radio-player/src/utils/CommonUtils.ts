@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { TOAST_TYPE } from "../constants/AppConstants";
+import 'react-toastify/dist/ReactToastify.css';
 
 const buildUrl = (url: string, pathParams: any, searchParams: any) => {
   url = url.trim();

@@ -32,7 +32,7 @@ function Browse() {
         }));
         setCountryOptions(options);
       } catch (error) {
-         CommonUtils().showToast(TOAST_TYPE.ERROR, "Error Getting Countries");
+        CommonUtils().showToast(TOAST_TYPE.ERROR, "Error Getting Countries");
       }
     };
     getCountries();
@@ -46,8 +46,11 @@ function Browse() {
         setRadioStations(data);
         if (!currentStation) setCurrentStation(data[0]);
       } catch (error) {
-        CommonUtils().showToast(TOAST_TYPE.ERROR, "Error Getting Radio Stations");
-      }finally{
+        CommonUtils().showToast(
+          TOAST_TYPE.ERROR,
+          "Error Getting Radio Stations"
+        );
+      } finally {
         setLoading(false);
       }
     };
@@ -147,21 +150,27 @@ function Browse() {
           onChange={(e) =>
             debounce(getRadioStationsByName(e.target.value), 300)
           }
-          placeholder={selectedCountry ? "Search by name" : "Select a country first"}
+          placeholder={
+            selectedCountry ? "Search by name" : "Select a country first"
+          }
           className="bg-white border border-gray-300 px-4 py-2 leading-tight"
         />
       </div>
       {/* radio stations list */}
-      <Loading isLoading={loading} spinnerType={SpinnerType.PACEMAN} message='Loading Radio Stations...'>
-      <div className="w-full flex flex-wrap justify-center gap-5 gap-y-10 ">
-        {radioStations.length > 0 ? (
-          radioStations?.map((radioStation: any, index: number) => (
-            <RadioStationCard key={index} radioStation={radioStation} />
-          ))
-        ) : (
-          <NoDataFound />
-        )}
-      </div>
+      <Loading
+        isLoading={loading}
+        spinnerType={SpinnerType.PACEMAN}
+        message="Loading Radio Stations..."
+      >
+        <div className="w-full flex flex-wrap justify-center gap-5 gap-y-10">
+          {radioStations.length > 0 ? (
+            radioStations?.map((radioStation: any, index: number) => (
+              <RadioStationCard key={index} radioStation={radioStation} />
+            ))
+          ) : (
+            <NoDataFound />
+          )}
+        </div>
       </Loading>
       <MobileDrawer />
     </div>

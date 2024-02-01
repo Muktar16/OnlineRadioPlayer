@@ -1,4 +1,4 @@
-import { FaGlobe, FaHeart, FaRadio } from "react-icons/fa6";
+import { FaGlobe, FaHeart, FaMusic, FaRadio } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 function AppSider() {
@@ -13,9 +13,13 @@ function AppSider() {
         <FaGlobe />
         <span>Radio Map</span>
       </Link>
-      <Link to='favorites' className="flex px-[20px] flex-row gap-5 hover:bg-slate-500 items-center justify-start h-[60px] dark:text-[white]">
+      <Link to='/favorites' className="flex px-[20px] flex-row gap-5 hover:bg-slate-500 items-center justify-start h-[60px] dark:text-[white]">
         <FaHeart />
         <span>Favorites</span>
+      </Link>
+      <Link to='/player' className="flex px-[20px] flex-row gap-5 hover:bg-slate-500 items-center justify-start h-[60px] dark:text-[white]">
+        <FaMusic />
+        <span>Player</span>
       </Link>
     </div>
   );

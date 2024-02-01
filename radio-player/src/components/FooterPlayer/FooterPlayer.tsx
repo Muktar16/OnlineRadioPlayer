@@ -3,9 +3,15 @@ import { FaHeart, FaPause } from "react-icons/fa6";
 import { LuClock12 } from "react-icons/lu";
 import { usePlayer } from "../../contexts/PlayerContext";
 import { ScaleLoader } from "react-spinners";
+import { useLocation } from "react-router-dom";
 
 const FooterPlayer = () => {
   const { currentStation, isPlaying, togglePlaying } = usePlayer();
+  const location = useLocation();
+  const isPlayerRoute = location.pathname === "/player";
+  if (isPlayerRoute) {
+    return null; 
+  }
   return (
     <div className="sticky w-full bg-primary h-[65px] flex items-center justify-between bottom-0 md:px-5 px-1">
       <div className="flex flex-row items-center justify-start gap-1 md:gap-4 overflow-ellipsis w-[40%]">

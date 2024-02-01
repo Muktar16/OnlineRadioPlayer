@@ -7,6 +7,7 @@ import AppSider from "./components/AppSider/AppSider";
 import MobileDrawer from "./components/MobileDrawer/MobileDrawer";
 import FooterPlayer from "./components/FooterPlayer/FooterPlayer";
 import RadioPlayer from "./components/RadioPlayer/RadioPlayer";
+import Player from "./pages/player/Player";
 // import { useDrawer } from "./contexts/DrawerContext";
 
 const App = () => {
@@ -17,13 +18,13 @@ const App = () => {
         <div className="relative w-full h-screen flex flex-row">
           <div className="min-w-[200px] mt-[70px] hidden lg:block fixed h-screen border-r-[1px] bg-slate-100 dark:bg-darkBackground">
             <AppSider />
-            {/* <MobileDrawer /> */}
           </div>
-          <div className="relative w-full lg:ml-[200px] mt-[70px] mb-[300px]">
+          <div className="w-full lg:ml-[200px] mt-[70px] mb-[300px]">
             <Routes>
               <Route path="/" Component={Browse} />
               <Route path="/radio-map" Component={RadioMap} />
               <Route path="/favorites" Component={Favorite} />
+              <Route path="/player" Component={Player} />
             </Routes>
             <FooterPlayer />
           </div>

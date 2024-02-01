@@ -1,43 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useFavoriteStationContext } from "../../contexts/FavoriteStationsContext";
+import RadioStationCard from "../../components/RadioStationCard/RadioStationCard";
+import NoDataFound from "../../components/NoData/NoData";
 
-const Favorites: React.FC = () => {
-  const [favoriteStations, setFavoriteStations] = useState<any[]>([]);
-
-  useEffect(() => {
-    const storedFavorites = localStorage.getItem("favoriteStations");
-    if (storedFavorites) {
-      setFavoriteStations(JSON.parse(storedFavorites));
-    }
-  }, []);
-
-  const removeFavorite = (stationId: string) => {
-    const updatedFavorites = favoriteStations.filter(
-      (station) => station.id !== stationId
-    );
-    localStorage.setItem("favoriteStations", JSON.stringify(updatedFavorites));
-    setFavoriteStations(updatedFavorites);
-  };
+const FavoritePage: React.FC = () => {
+  const { favoriteStations, removeFavorite } = useFavoriteStationContext();
 
   return (
-    <div>
-      <h2>Favorites</h2>
-      {favoriteStations.length === 0 ? (
-        <p>No favorite stations yet.</p>
+    <div className="w-full h-screen flex flex-wrap justify-center gap-5 gap-y-10 p-4 dark:bg-darkBackground">
+      {favoriteStations.length > 0 ? (
+        favoriteStations.map((radioStation: any, index: number) => (
+          <RadioStationCard
+            key={index}
+            radioStation={radioStation}
+            onRemove={() => removeFavorite(radioStation.stationuuid)}
+          />
+        ))
       ) : (
-        <ul>
-          {favoriteStations.map((station) => (
-            <li key={station.id}>
-              {station.name}{" "}
-              <button onClick={() => removeFavorite(station.id)}>
-                Remove from Favorites
-              </button>
-            </li>
-          ))}
-        </ul>
+        <NoDataFound />
       )}
     </div>
   );
 };
 
-export default Favorites;
-
+export default FavoritePage;

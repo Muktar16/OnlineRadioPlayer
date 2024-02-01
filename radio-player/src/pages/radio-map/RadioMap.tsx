@@ -9,7 +9,6 @@ import Loading from "../../components/Loading/Loading";
 import { SpinnerType } from "../../constants/AppConstants";
 
 const RadioMap: React.FC<{}> = () => {
-  const center: L.LatLngTuple = [23.752753878263377, 90.4242629286096];
   const [radioStations, setRadioStations] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,7 +37,7 @@ const RadioMap: React.FC<{}> = () => {
     if (!radioStations) return;
 
     const map = L.map("map", {
-      center: center,
+      center: [radioStations[0].latitude, radioStations[0].longitude],
       zoom: 10,
     });
 

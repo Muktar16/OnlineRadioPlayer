@@ -1,11 +1,15 @@
 import { FaHeart, FaPlay } from "react-icons/fa6";
 import { usePlayer } from "../../contexts/PlayerContext";
+import { useFavoriteStationContext } from "../../contexts/FavoriteStationsContext";
 
 const RadioStationCard = ({ radioStation }: any) => {
   const { setCurrentStation } = usePlayer();
+  const { addFavorite,isFavorite, removeFavorite } = useFavoriteStationContext();
 
-  const handleAddToFavorite = () => {
-    console.log("add to favorite");
+  const hadnleFavoriteClick = () => {
+    if(isFavorite(radioStation.stationuuid)) removeFavorite(radioStation.stationuuid);
+    else addFavorite(radioStation);
+    
   };
   const handlePlay = () => {
     setCurrentStation(radioStation);
@@ -56,10 +60,10 @@ const RadioStationCard = ({ radioStation }: any) => {
       <div className="w-full absolute bottom-3">
         <div className="flex items-center justify-end mr-10 gap-5">
           <div
-            onClick={handleAddToFavorite}
-            className="flex gap-1 items-center justify-center text-[20px] cursor-pointer dark:text-white"
+            onClick={hadnleFavoriteClick}
+            className={`flex gap-1 items-center justify-center ${isFavorite(radioStation.stationuuid) ? "text-[green]" : "dark:text-white"} text-[20px] cursor-pointer`}
           >
-            <FaHeart /> Like
+            <FaHeart/> {isFavorite(radioStation.stationuuid ) ? "Liked" : "Like"}
           </div>
 
           <div

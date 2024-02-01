@@ -10,6 +10,8 @@ interface PlayerContextProps {
   setCurrentStation: (station: RadioStation) => void;
   setVolume: (volume: number) => void;
   toggleRecord: () => void;
+  increaseVolume: () => void;
+  decreaseVolume: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextProps | undefined>(undefined);
@@ -33,6 +35,22 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
     setRecordEnabled((prev) => !prev);
   };
 
+  const increaseVolume = () => {
+    if (volume < 1) {
+      const newVolume = Math.min(1, volume + 0.5);
+      setVolume(newVolume);
+      if(audioRef.current) audioRef.current.volume = newVolume;
+    }
+  };
+
+  const decreaseVolume = () => {
+    if (volume > 0) {
+      const newVolume = Math.max(0, volume - 0.5);
+      setVolume(newVolume);
+      if(audioRef.current) audioRef.current.volume = newVolume;
+    }
+  };
+
   return (
     <PlayerContext.Provider
       value={{
@@ -45,6 +63,9 @@ export const PlayerProvider: React.FC<PlayerProviderProps> = ({ children }) => {
         setCurrentStation,
         setVolume,
         toggleRecord,
+        increaseVolume,
+        decreaseVolume,
+
       }}
     >
       {children}
